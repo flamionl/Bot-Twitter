@@ -10,7 +10,8 @@ def dico_creation(path) :
         for files in new_dirs :
             new_updated_path = updated_path+'/'+files
             print(new_updated_path)
-            dico[files] = deep_learning.transform_image(new_updated_path, deep_learning.load_network('MobileNet'))
+            dico[files] = deep_learning.transform_image(new_updated_path, deep_learning.load_network(''))
     return dico
 dico = dico_creation('/home/louis/Documents/Mini_Projet 3/Environnement test')
 print(dico)
+#test
