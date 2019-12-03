@@ -15,3 +15,4 @@ def dico_creation(path) :
 dico = dico_creation('/home/louis/Documents/Mini_Projet 3/Environnement test')
 print(dico)
 #test
+#ceci est de la merde
