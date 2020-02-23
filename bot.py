@@ -156,7 +156,6 @@ def commentaire(tweet) :
                     print('Hashtag trouvé :', word)
             #On parcourt le tweet à la recherche de mots clés pour voir si on doit tag des amis 
             if search("(?i)mentionne",tweet.retweeted_status.full_text) :
-
                 print('Mot clé trouvé, mention des amis...')
                 mention_amount(tweet,hashtag,comments_mention,index,index_2)
             elif search("(?i)invite", tweet.retweeted_status.full_text) :
@@ -343,8 +342,27 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
     """Calcule le nombre d'amis à mentionner dans le tweet"""
     if hasattr(tweet,'retweeted_status') :
         split_text = tweet.retweeted_status.full_text.split()
+        for word in split_text :
+            if word[:3] == 'ami' :
+                if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'trois' or split_text[split_text.index(word)-1] == '3' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
+            if word[:8] == 'personne' :
+                if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'trois' or split_text[split_text.index(word)-1] == '3' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
+                elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
+                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
     else :
-        split_text = tweet.full_text
+        split_text = tweet.full_text.split()
     for word in split_text :
         if word[:3] == 'ami' :
             if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
@@ -369,5 +387,5 @@ while True :
     waiting_time = random.randrange(2700, 3000)
     print('Loop cool down de %d secondes' %(waiting_time))
     time.sleep(waiting_time)
-
+#Ceci est un test
 
