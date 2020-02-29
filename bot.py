@@ -8,9 +8,9 @@ auth = OAuthHandler(credentials.api_key, credentials.api_secret_key)
 auth.set_access_token(credentials.access_token,credentials.access_token_secret)
 api = API(auth)
 #Mots clés de recherce des tweets
-liste_recherche = ['#Concours','Gagne','Gagnez','RT + Follow']
+liste_recherche = ['#Concours','Gagne','RT + Follow']
 
-def participation(keywords) :
+def participation(keywords) :   
     """"Participe à des concours sur twitter
     Paramètre
     ---------
@@ -18,7 +18,7 @@ def participation(keywords) :
     """
     for word in keywords :
         print('Recherche avec le mot', word)
-        for tweet in Cursor(api.search, q = word, tweet_mode = 'extended', lang = 'fr', result_type = 'mixed').items(20) :
+        for tweet in Cursor(api.search, q = word, tweet_mode = 'extended', lang = 'fr', result_type = 'mixed').items(30) :
             while retweet_concours_rate() >= 25 :
                	random_retweet()
                	print('Pause après retweet')
@@ -32,12 +32,14 @@ def participation(keywords) :
                 print('--------------------------------------------------------------------')
                 print('Concours trouvé, auteur :', tweet.retweeted_status.author.screen_name)
                 try :
-                    #On RT, fav et follow
+                    #On RT
                     api.retweet(tweet.retweeted_status.id)
                     print('Retweet du tweet')
+                    #On fav
                     api.create_favorite(tweet.retweeted_status.id)
                     time.sleep(random.randrange(2,10))
                     print('Fav du tweet')
+                    #On follow
                     api.create_friendship(tweet.retweeted_status.author.id)
                     time.sleep(random.randrange(2,10))
                     #Follow si besoin de follow des gens mentionnées dans le tweet
@@ -45,7 +47,6 @@ def participation(keywords) :
                     time.sleep(random.randrange(2,10))
                     #On commente avec le hashtag si besoin et on mentionne des amis
                     commentaire(tweet)
-                    time.sleep(random.randrange(2,10))
                     #On met un cool down de quelques minutes pour ne pas spam les requêtes
                     print('Cool down avant le changement de mot clé')
                     time.sleep(random.randint(600,800))
@@ -62,13 +63,15 @@ def participation(keywords) :
                 print('--------------------------------------------------------------------')
                 print('Concours trouvé, auteur :', tweet.user.screen_name)
                 try :
-                    #On RT, fav et follow
+                    #On RT
                     api.retweet(tweet.id)
                     time.sleep(random.randrange(2,10))
                     print('Retweet du tweet')
+                    #On fav
                     api.create_favorite(tweet.id)
                     time.sleep(random.randrange(2,10))
                     print('Fav du tweet')
+                    #On follow
                     api.create_friendship(tweet.user.id)
                     time.sleep(random.randrange(2,10))
                     #Follow si besoin de follow des gens mentionnées dans le tweet
@@ -340,7 +343,9 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
     if hasattr(tweet,'retweeted_status') :
         split_text = tweet.retweeted_status.full_text.split()
         for word in split_text :
-            if word[:3] == 'ami' :
+            #Regarde les 3 premières lettres de la string
+            if word[:3] == 'ami' or word[:3] == 'Ami':
+                #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                     api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
@@ -349,7 +354,9 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
                     api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
                     api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
-            if word[:8] == 'personne' :
+            #Regarde les 8 premières lettres de la string
+            if word[:8] == 'personne' or word[:8] == 'Personne' :
+                #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                     api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
@@ -361,7 +368,9 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
     else :
         split_text = tweet.full_text.split()
     for word in split_text :
-        if word[:3] == 'ami' :
+        #Regarde les 3 premières lettres de la string
+        if word[:3] == 'ami' or word[:3] == 'Ami':
+            #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
             if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.id)
             elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
@@ -370,7 +379,9 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.id)
             elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.id)
-        if word[:8] == 'personne' :
+        #Regarde les 8 premières lettres de la string     
+        if word[:8] == 'personne' or word[:8] == 'Personne' :
+            #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
             if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.id)
             elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
