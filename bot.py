@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-
-
 from tweepy import *
 from re import *
 import credentials
@@ -36,9 +33,9 @@ def participation(keywords) :
                 print('Concours trouvé, auteur :', tweet.retweeted_status.author.screen_name)
                 try :
                     #On RT, fav et follow
-                    api.retweet(tweet.id)
+                    api.retweet(tweet.retweeted_status.id)
                     print('Retweet du tweet')
-                    api.create_favorite(tweet.id)
+                    api.create_favorite(tweet.retweeted_status.id)
                     time.sleep(random.randrange(2,10))
                     print('Fav du tweet')
                     api.create_friendship(tweet.retweeted_status.author.id)
@@ -382,10 +379,13 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.id)
             elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.id)
+
+#Corps du programme
+
 while True :
     participation(liste_recherche)
     waiting_time = random.randrange(2700, 3000)
     print('Loop cool down de %d secondes' %(waiting_time))
     time.sleep(waiting_time)
-#Ceci est un test
+
 
