@@ -35,6 +35,7 @@ def participation(keywords) :
                     #On RT
                     api.retweet(tweet.retweeted_status.id)
                     print('Retweet du tweet')
+                    time.sleep(random.randrange(2,10))
                     #On fav
                     api.create_favorite(tweet.retweeted_status.id)
                     time.sleep(random.randrange(2,10))
@@ -263,7 +264,7 @@ def random_tweet() :
         trends = api.trends_place(615702)
         #On en prend un au hasard qui n'est pas un concours
         random_trends = trends[0]['trends'][random.randint(0,len(trends[0]['trends'])-1)]['name']
-        while random_trends == '#concours' or random_trends == '#Concours' :
+        while random_trends == '#concours' or random_trends == '#Concours' or random_trends == 'RT':
             random_trends = trends[0]['trends'][random.randint(0,len(trends[0]['trends'])-1)]['name']
         #On recherche des tweets avec ce hashtag et on en retweet un
         for tweet in Cursor(api.search, q = random_trends, tweet_mode = 'extended', lang = 'fr', result_type = 'mixed').items(10) :
@@ -340,6 +341,7 @@ def retweet_concours_rate() :
             print(err.reason)          
 def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
     """Calcule le nombre d'amis à mentionner dans le tweet"""
+    #Si le tweet est un retweet
     if hasattr(tweet,'retweeted_status') :
         split_text = tweet.retweeted_status.full_text.split()
         for word in split_text :
@@ -347,24 +349,26 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
             if word[:3] == 'ami' or word[:3] == 'Ami':
                 #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'trois' or split_text[split_text.index(word)-1] == '3' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
             #Regarde les 8 premières lettres de la string
             if word[:8] == 'personne' or word[:8] == 'Personne' :
                 #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'deux' or split_text[split_text.index(word)-1] == '2' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 ',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'trois' or split_text[split_text.index(word)-1] == '3' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx',tweet.retweeted_status.id)
                 elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
-                    api.update_status('@'+tweet.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
+                    api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
+
+    #Si le tweet n'est pas un retweet
     else :
         split_text = tweet.full_text.split()
     for word in split_text :
@@ -396,7 +400,6 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
 while True :
     participation(liste_recherche)
     waiting_time = random.randrange(2700, 3000)
-    print('Loop cool down de %d secondes' %(waiting_time))
     time.sleep(waiting_time)
 
 
