@@ -346,7 +346,7 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
         split_text = tweet.retweeted_status.full_text.split()
         for word in split_text :
             #Regarde les 3 premières lettres de la string
-            if word[:3] == 'ami' or word[:3] == 'Ami':
+            if word[:3] == 'ami' or word[:3] == 'Ami' or word[:3] == 'AMI':
                 #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                     api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
@@ -357,7 +357,7 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
                 elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
                     api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.retweeted_status.id)
             #Regarde les 8 premières lettres de la string
-            if word[:8] == 'personne' or word[:8] == 'Personne' :
+            if word[:8] == 'personne' or word[:8] == 'Personne' or word[:8] == 'PERSONNE' :
                 #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
                 if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                     api.update_status('@'+tweet.retweeted_status.author.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.retweeted_status.id)
@@ -373,7 +373,7 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
         split_text = tweet.full_text.split()
     for word in split_text :
         #Regarde les 3 premières lettres de la string
-        if word[:3] == 'ami' or word[:3] == 'Ami':
+        if word[:3] == 'ami' or word[:3] == 'Ami' or word[:3] == 'AMI':
             #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
             if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.id)
@@ -384,7 +384,7 @@ def mention_amount(tweet,hashtag,comments_mention,index,index_2) :
             elif split_text[split_text.index(word)-1] == 'quatre' or split_text[split_text.index(word)-1] == '4' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 @TheSalvio93 @_Nayyx @Leeeeeper',tweet.id)
         #Regarde les 8 premières lettres de la string     
-        if word[:8] == 'personne' or word[:8] == 'Personne' :
+        if word[:8] == 'personne' or word[:8] == 'Personne' or word[:8] == 'PERSONNE' :
             #Regarde le mot qui précède pour savoir combien d'amis il faut mentionner
             if split_text[split_text.index(word)-1] == 'un' or split_text[split_text.index(word)-1] == '1' or split_text[split_text.index(word)-1] == 'un(e)' :
                 api.update_status('@'+tweet.user.screen_name+' '+hashtag+' '+comments_mention[index]+' @arthur6140 ',tweet.id)
